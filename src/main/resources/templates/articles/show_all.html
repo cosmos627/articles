@@ -11,6 +11,14 @@
 <!-- 우리가 작업할 공간 -->
 <body>
 <div layout:fragment="content" class="content">
+
+    <div th:unless="${msg == null}">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong th:text="${msg}">Holy guacamole!</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+
     <table class="table">
         <thead>
         <tr>
@@ -24,7 +32,7 @@
             <tr th:each="article : ${articles}" th:object="${article}">
                 <th scope="row" th:text="*{id}">1</th>
                 <td>
-                    <a th:href="@{/articles/{id}{id=*{id}}}" th:text="*{title}">제목111 </a>
+                    <a th:href="@{/articles/{id}(id=*{id})}" th:text="*{title}">제목111 </a>
                 </td>
                 <td th:text="*{content}">내용 1111</td>
             </tr>
