@@ -11,7 +11,7 @@
 <!-- 우리가 작업할 공간 -->
 <body>
 <div layout:fragment="content" class="content">
-    <form id="frm" class="container" action="/articles/create" method="post" >
+    <form id="frm" class="container" action="/articles/create" method="post">
         <div class="mb3">
             <label class="form-label">제목</label>
             <input type="text" id="title" class="form-control" name="title">
@@ -24,6 +24,18 @@
         <input type="button" value="다시쓰기" >
         <a href="/articles">Back</a>
     </form>
+<script th:inline="javascript">
+    $(document).ready(function(){
+        $("input[value='다시쓰기']").on('click', function(){
+            $("#title").val("");
+            $("#contents").val("");
+        })
+
+        $("input[value='저장']").on('click', function(){
+            $("form").submit();
+        })
+    });
+</script>
 </div>
 </body>
 </html>
