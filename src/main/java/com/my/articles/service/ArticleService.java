@@ -17,13 +17,13 @@ public class ArticleService {
 
     public List<ArticleDTO> getAllArticle() {
         List<Article> articles = dao.getAllArticle();
-        if(ObjectUtils.isEmpty(articles)){
+        if(ObjectUtils.isEmpty(articles)) {
             return Collections.emptyList();
         }
         List<ArticleDTO> dtoList = articles
-                .stream().map(x->ArticleDTO.fromArticle(x))
+                .stream().map(x -> ArticleDTO.fromArticle(x))
                 .toList();
-        return dtoList;
+        return  dtoList;
     }
 
     public ArticleDTO getOneArticle(Long id) {

@@ -2,17 +2,16 @@
 <html xmlns:th="www.thymeleaf.org"
       xmlns:layout="www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
-<meta charset="UTF-8">
-<!--  전체 적용될 CSS-->
-<th:block layout:fragment="css"></th:block>
-<!--  전체 적용될 스크립트-->
-<th:block layout:fragment="script"></th:block>
+<head>
+    <meta charset="UTF-8">
+    <!--  <script src="/js/jquery.js"></script>-->
+</head>
 
-<!-- 우리가 작업할 공간 -->
+<!--  우리가 작업할 공간 -->
 <body>
 <div layout:fragment="content" class="content">
     <form id="frm" class="container" action="/articles/create"
-           th:object="${dto}" method="post">
+          th:object="${dto}" method="post" >
         <div class="mb3">
             <label class="form-label">제목</label>
             <input type="text" id="title" class="form-control"
@@ -27,9 +26,7 @@
         <input type="button" value="다시쓰기" >
         <a href="/articles">Back</a>
     </form>
-<script th:inline="javascript">
-
-</script>
 </div>
+
 </body>
 </html>

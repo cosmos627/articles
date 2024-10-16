@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +21,10 @@ public class Article {
     @Column(nullable = false, length = 1000)
     private String content;
 
-    @OneToMany(mappedBy = "article",
-            fetch = FetchType.LAZY,
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "article",
             cascade = {CascadeType.PERSIST,
                     CascadeType.REMOVE})
     List<Comment> comments = new ArrayList<>();
+
 }
