@@ -1,48 +1,55 @@
 package com.my.articles.controller;
 
-import com.my.articles.dto.ArticleDTO;
 import com.my.articles.dto.CommentDTO;
-import com.my.articles.entity.Comment;
 import com.my.articles.service.CommentService;
-import jakarta.websocket.server.PathParam;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Map;
 
 @Controller
-@RequestMapping("comments")
+@RequiredArgsConstructor
+@RequestMapping("/articles")
 public class CommentController {
-    @Autowired
-    CommentService commentService;
 
-//    @GetMapping("{id}/update")
-//    public String viewUpdateComment(@PathVariable("id")Long id,
-//                                    Model model) {
-//        CommentDTO dto = commentService.getOneComment(id);
-//        model.addAttribute("dto", dto);
-//        return "/comments/update";
-//    }
+    private final CommentService commentService;
 
-    @PostMapping("update")
-    public String updateComment(@RequestParam("articleId") Long articleId,
-                                CommentDTO dto) {
-        String url = "redirect:/articles/"+articleId;
+    @GetMapping("comments/{id}")
+    public String deleteComment(
+            @PathVariable("id")Long id) {
+        Long articleId = commentService.deleteComment(id);
+        return "redirect:/articles/" + articleId;
+    }
+
+    @PostMapping("{id}/comments")
+    public String insertComment(CommentDTO dto,
+                                @PathVariable("id")Long articleId) {
+        dto.setId(null);
+        commentService.insertComment(articleId, dto);
+        return "redirect:/articles/" + articleId;
+    }
+
+    @GetMapping("comments/view/{id}")
+    public String updateCommentView(
+            @PathVariable("id") Long commentId,
+            Model model) {
+        Map<String, Object> map = commentService.findByIdComment(commentId);
+        model.addAttribute("dto", map.get("dto"));
+        model.addAttribute("articleId", map.get("articleId"));
+        return "/articles/update_comment";
+    }
+
+    @PostMapping("{article_id}/comments/{comment_id}")
+    public String updateComment(CommentDTO dto,
+                                @PathVariable("article_id")Long article_id,
+                                @PathVariable("comment_id")Long comment_id) {
+        dto.setId(comment_id);
         commentService.updateComment(dto);
-        return url;
-    }
-
-    @GetMapping("{id}/delete")
-    public String deleteComment(@PathVariable("id")Long id,
-                                    @RequestParam("article_id")Long article_id) {
-        String url = "redirect:/articles/"+article_id;
-        commentService.deleteComment(id);
-        return url;
-    }
-
-    @PostMapping("insert")
-    public String insertComment(CommentDTO dto) {
-        System.out.println("======================== "+dto.getNickname());
-        return "/articles";
+        return "redirect:/articles/" + article_id;
     }
 }

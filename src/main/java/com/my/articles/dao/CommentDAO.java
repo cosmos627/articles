@@ -1,6 +1,6 @@
 package com.my.articles.dao;
 
-import com.my.articles.dto.CommentDTO;
+import com.my.articles.entity.Article;
 import com.my.articles.entity.Comment;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -13,18 +13,25 @@ public class CommentDAO {
     @Autowired
     EntityManager em;
 
-    public Comment getOneComment(Long id) {
-        return em.find(Comment.class, id);
-    }
-
-    public void updateComment(CommentDTO dto) {
-        Comment comment = em.find(Comment.class, dto.getId());
-        comment.setNickname(dto.getNickname());
-        comment.setBody(dto.getBody());
-    }
-
-    public void deleteComment(Long id) {
+    public Long deleteComment(Long id) {
         Comment comment = em.find(Comment.class, id);
         em.remove(comment);
+        return comment.getArticle().getId();
+    }
+
+    public void insertComment(Long articleId, Comment comment) {
+        Article article = em.find(Article.class, articleId);
+        comment.setArticle(article);
+        article.getComments().add(comment);
+        em.persist(article);
+    }
+
+    public Comment findByIdComment(Long commentId) {
+        return em.find(Comment.class, commentId);
+    }
+
+    public void updateComment(Comment comment) {
+        Comment updateCommnet = em.find(Comment.class, comment.getId());
+        updateCommnet.setBody(comment.getBody());
     }
 }
