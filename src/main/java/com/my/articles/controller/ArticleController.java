@@ -30,7 +30,7 @@ public class ArticleController {
 
     @GetMapping("")
     public String showAllArticles(Model model,
-                                  @PageableDefault(page = 5,
+                                  @PageableDefault(page = 0,
                                   size = 5,
                                   sort = "id",
                                   direction = Sort.Direction.DESC)
